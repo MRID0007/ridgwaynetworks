@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Ridgway Networks | Full-Stack Development & Digital Infrastructure",
   description:
-    "Professional web development, full-stack applications, and DevOps infrastructure services by Mike Ridgway. Portfolio of production projects built with Next.js, TypeScript, Kubernetes, and modern tech.",
+    "Professional web development, full-stack applications, and DevOps infrastructure services by Michael Ridgway. Portfolio of production projects built with Next.js, TypeScript, Kubernetes, and modern tech.",
   keywords: [
     "web development",
     "full-stack developer",

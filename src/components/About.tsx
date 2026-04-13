@@ -30,7 +30,7 @@ export default function About() {
                 <span className="text-terminal">$</span> whoami
               </p>
               <p className="font-[family-name:var(--font-jetbrains)] text-sm text-text-primary mt-1">
-                Mike Ridgway — Full-Stack Developer
+                Michael Ridgway — Full-Stack Developer
               </p>
             </div>
           </div>
