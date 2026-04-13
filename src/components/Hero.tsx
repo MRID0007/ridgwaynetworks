@@ -32,9 +32,9 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 text-center">
+      <div className="relative z-10 flex flex-col items-center">
         <pre
-          className="ascii-glow text-terminal font-[family-name:var(--font-jetbrains)] leading-tight select-none text-[0.45rem] sm:text-[0.55rem] md:text-[0.75rem] lg:text-[0.85rem]"
+          className="ascii-glow text-terminal font-[family-name:var(--font-jetbrains)] leading-[1.15] select-none text-[0.35rem] sm:text-[0.5rem] md:text-[0.7rem] lg:text-[0.85rem] text-left"
           aria-label="Ridgway Networks"
         >
           {ASCII_ART}
