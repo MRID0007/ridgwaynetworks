@@ -58,22 +58,6 @@ export interface Project {
 
 export const PROJECTS: Project[] = [
   {
-    title: "Mesmerise Digital Intelligence",
-    subtitle: "AI-Powered Lead Scoring SaaS",
-    description:
-      "An AI-powered lead scoring platform that automates website audits, SEO analysis, and intelligent lead prioritisation. Features Excel lead upload, automated Playwright-based web scraping, PDF report generation, and background job processing with Inngest.",
-    techStack: [
-      "Next.js",
-      "TypeScript",
-      "PostgreSQL",
-      "Drizzle ORM",
-      "Inngest",
-      "Playwright",
-      "Tailwind CSS",
-    ],
-    url: "https://mesmerise.ridgwaynetworks.com",
-  },
-  {
     title: "MonSec.io",
     subtitle: "Cybersecurity Company",
     description:
@@ -119,6 +103,21 @@ export const PROJECTS: Project[] = [
       "Tailwind CSS",
     ],
     url: "https://lenarecipes.com",
+  },
+  {
+    title: "Mesmerise Digital Intelligence",
+    subtitle: "AI-Powered Lead Scoring SaaS",
+    description:
+      "An AI-powered lead scoring platform that automates website audits, SEO analysis, and intelligent lead prioritisation. Features Excel lead upload, automated Playwright-based web scraping, PDF report generation, and background job processing with Inngest.",
+    techStack: [
+      "Next.js",
+      "TypeScript",
+      "PostgreSQL",
+      "Drizzle ORM",
+      "Inngest",
+      "Playwright",
+      "Tailwind CSS",
+    ],
   },
 ];
 
