@@ -17,6 +17,8 @@ interface TerminalCommand {
 
 const PROMPT = "michael@ridgway:~$";
 
+type WindowState = "normal" | "minimised" | "fullscreen" | "closed";
+
 function TerminalWindow({
   title,
   initialCommand,
@@ -35,6 +37,7 @@ function TerminalWindow({
   const [initialDone, setInitialDone] = useState(false);
   const [hoverDots, setHoverDots] = useState(false);
   const [started, setStarted] = useState(false);
+  const [windowState, setWindowState] = useState<WindowState>("normal");
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -87,54 +90,87 @@ function TerminalWindow({
     }
   }, [commandIndex, initialDone, started, commands]);
 
-  // Scroll within the terminal container only — never the page
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [lines]);
 
-  return (
-    <div
-      ref={ref}
-      className="bg-[#0d0d14] text-terminal p-4 rounded-lg shadow-lg shadow-terminal/5 font-[family-name:var(--font-jetbrains)] text-xs sm:text-sm relative border border-border overflow-hidden"
-    >
-      {/* Title bar */}
-      <div className="flex items-center gap-3 mb-4">
-        <div
-          className="flex space-x-2"
-          onMouseEnter={() => setHoverDots(true)}
-          onMouseLeave={() => setHoverDots(false)}
+  // Closed state — just show a reopen button
+  if (windowState === "closed") {
+    return (
+      <div ref={ref}>
+        <button
+          onClick={() => setWindowState("normal")}
+          className="font-[family-name:var(--font-jetbrains)] text-xs border border-border text-text-secondary hover:text-terminal hover:border-terminal/40 px-4 py-2 transition-colors"
         >
-          <div className="w-3 h-3 rounded-full bg-red-500 relative">
-            {hoverDots && (
-              <span className="absolute inset-0 flex items-center justify-center text-[8px] text-white">
-                &times;
-              </span>
+          Reopen terminal{title ? `: ${title}` : ""}
+        </button>
+      </div>
+    );
+  }
+
+  // Fullscreen state — fixed overlay
+  if (windowState === "fullscreen") {
+    return (
+      <>
+        <div ref={ref} />
+        <div className="fixed inset-0 z-50 bg-[#0d0d14] text-terminal p-4 font-[family-name:var(--font-jetbrains)] text-xs sm:text-sm flex flex-col">
+          {/* Title bar */}
+          <div className="flex items-center gap-3 mb-4 shrink-0">
+            <div
+              className="flex space-x-2"
+              onMouseEnter={() => setHoverDots(true)}
+              onMouseLeave={() => setHoverDots(false)}
+            >
+              <button
+                onClick={() => setWindowState("closed")}
+                className="w-3 h-3 rounded-full bg-red-500 relative cursor-pointer"
+              >
+                {hoverDots && (
+                  <span className="absolute inset-0 flex items-center justify-center text-[8px] leading-none text-white font-bold">
+                    &times;
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={() => setWindowState("normal")}
+                className="w-3 h-3 rounded-full bg-yellow-400 relative cursor-pointer"
+              >
+                {hoverDots && (
+                  <span className="absolute inset-0 flex items-center justify-center text-[7px] leading-none text-black font-bold">
+                    &ndash;
+                  </span>
+                )}
+              </button>
+              <button
+                onClick={() => setWindowState("normal")}
+                className="w-3 h-3 rounded-full bg-green-500 relative cursor-pointer"
+              >
+                {hoverDots && (
+                  <span className="absolute inset-0 flex items-center justify-center leading-none text-white" style={{ fontSize: "6px" }}>
+                    &#9724;
+                  </span>
+                )}
+              </button>
+            </div>
+            {title && (
+              <span className="text-text-secondary text-xs">{title}</span>
             )}
           </div>
-          <div className="w-3 h-3 rounded-full bg-yellow-400 relative">
-            {hoverDots && (
-              <span className="absolute inset-0 flex items-center justify-center text-[8px] text-black">
-                &ndash;
-              </span>
-            )}
-          </div>
-          <div className="w-3 h-3 rounded-full bg-green-500 relative">
-            {hoverDots && (
-              <span className="absolute inset-0 flex items-center justify-center text-[8px] text-white">
-                &#9723;
-              </span>
-            )}
+
+          {/* Terminal body — fills remaining space */}
+          <div ref={scrollRef} className="flex-1 overflow-y-auto">
+            {renderLines()}
           </div>
         </div>
-        {title && (
-          <span className="text-text-secondary text-xs">{title}</span>
-        )}
-      </div>
+      </>
+    );
+  }
 
-      {/* Terminal body */}
-      <div ref={scrollRef} className="max-h-56 overflow-y-auto">
+  function renderLines() {
+    return (
+      <>
         {lines.map((line, i) => (
           <div key={i}>
             {line.isOutput || line.className ? (
@@ -163,7 +199,67 @@ function TerminalWindow({
             <span className="animate-pulse">|</span>
           </div>
         )}
+      </>
+    );
+  }
+
+  // Normal / minimised
+  return (
+    <div
+      ref={ref}
+      className="bg-[#0d0d14] text-terminal p-4 rounded-lg shadow-lg shadow-terminal/5 font-[family-name:var(--font-jetbrains)] text-xs sm:text-sm relative border border-border overflow-hidden transition-all duration-300"
+    >
+      {/* Title bar */}
+      <div className="flex items-center gap-3 mb-4">
+        <div
+          className="flex space-x-2"
+          onMouseEnter={() => setHoverDots(true)}
+          onMouseLeave={() => setHoverDots(false)}
+        >
+          <button
+            onClick={() => setWindowState("closed")}
+            className="w-3 h-3 rounded-full bg-red-500 relative cursor-pointer"
+          >
+            {hoverDots && (
+              <span className="absolute inset-0 flex items-center justify-center text-[8px] leading-none text-white font-bold">
+                &times;
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() =>
+              setWindowState(windowState === "minimised" ? "normal" : "minimised")
+            }
+            className="w-3 h-3 rounded-full bg-yellow-400 relative cursor-pointer"
+          >
+            {hoverDots && (
+              <span className="absolute inset-0 flex items-center justify-center text-[7px] leading-none text-black font-bold">
+                &ndash;
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setWindowState("fullscreen")}
+            className="w-3 h-3 rounded-full bg-green-500 relative cursor-pointer"
+          >
+            {hoverDots && (
+              <span className="absolute inset-0 flex items-center justify-center leading-none text-white" style={{ fontSize: "6px" }}>
+                &#9724;
+              </span>
+            )}
+          </button>
+        </div>
+        {title && (
+          <span className="text-text-secondary text-xs">{title}</span>
+        )}
       </div>
+
+      {/* Terminal body — hidden when minimised */}
+      {windowState !== "minimised" && (
+        <div ref={scrollRef} className="max-h-56 overflow-y-auto">
+          {renderLines()}
+        </div>
+      )}
     </div>
   );
 }
