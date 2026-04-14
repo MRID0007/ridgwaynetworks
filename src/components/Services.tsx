@@ -1,5 +1,6 @@
 import { SERVICES } from "@/lib/constants";
 import ScrollReveal from "./ScrollReveal";
+import { DeployTerminal } from "./Terminal";
 
 export default function Services() {
   return (
@@ -29,6 +30,12 @@ export default function Services() {
             </ScrollReveal>
           ))}
         </div>
+
+        <ScrollReveal delay={500}>
+          <div className="mt-10">
+            <DeployTerminal />
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );
