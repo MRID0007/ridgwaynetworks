@@ -12,9 +12,9 @@ export default function Portfolio() {
           <div className="w-16 h-px bg-terminal/50 mb-12" />
         </ScrollReveal>
 
-        <div className="flex flex-col gap-8">
-          {PROJECTS.map((project, i) => (
-            <ScrollReveal key={project.title} delay={i * 100}>
+        <div className="flex flex-col gap-6">
+          {PROJECTS.map((project) => (
+            <ScrollReveal key={project.title}>
               <div className="group border border-border hover:border-terminal/30 bg-bg-card hover:bg-bg-card-hover p-8 transition-all duration-300">
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
                   <div>
@@ -47,7 +47,7 @@ export default function Portfolio() {
                   )}
                 </div>
 
-                <p className="text-text-secondary text-sm leading-relaxed mb-6">
+                <p className="text-text-secondary text-sm leading-relaxed mb-5">
                   {project.description}
                 </p>
 

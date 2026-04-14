@@ -171,9 +171,8 @@ export const ABOUT_TEXT = [
 ];
 
 export const NAV_LINKS = [
-  { label: "Services", href: "#services" },
-  { label: "Portfolio", href: "#portfolio" },
-  { label: "Skills", href: "#skills" },
   { label: "About", href: "#about" },
+  { label: "Portfolio", href: "#portfolio" },
+  { label: "Services", href: "#services" },
   { label: "Contact", href: "#contact" },
 ];
